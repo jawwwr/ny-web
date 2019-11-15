@@ -11,7 +11,7 @@ const Navbar: React.FunctionComponent = props => {
       <div className="container">
         <div className="navbar-brand">
           <Link className="navbar-item brand-text" to="/">
-            NY Web
+            Demo
           </Link>
           <div className="navbar-burger burger" data-target="navMenu">
             <span></span>
@@ -24,11 +24,8 @@ const Navbar: React.FunctionComponent = props => {
             {
               cookies['ny-key'] ?
               <>
-                <Link className="navbar-item" to="/admin/dashboard">
-                  Dashboard
-                </Link>
-                <Link className="navbar-item" to="/admin/other-page">
-                  Other Page
+                <Link className="navbar-item is-active" to="/admin/balances">
+                  TransferWise
                 </Link>
               </>
               :

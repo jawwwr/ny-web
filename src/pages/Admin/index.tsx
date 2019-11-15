@@ -5,6 +5,7 @@ import Navbar from 'components/Navbar'
 import Sidebar from 'components/Sidebar'
 
 export const Admin: React.FunctionComponent = props => {
+
   const [cookies] = useCookies(['ny-key']);
   if (cookies['ny-key']) {
     return (
