@@ -135,7 +135,7 @@ const AutoPayout: React.FC = ({ location }: any) => {
   const [transfer, setTransfer] = useState();
   const [contract_name, setContractName] = useState();
   const [error, setError] = useState('');
-
+  console.log(error)
   useEffect( () => {
     const params = queryString.parse(location.search)
     const contract = contracts.find(contract => contract.id === toNumber(params.contract));

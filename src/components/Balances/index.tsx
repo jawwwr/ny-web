@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import API from 'api'
 import { AccountBalanceInterface, BalanceInterface } from './types'
 
-const profile_id = '2416'
+const profile_id = '11319295'
 
 const Users : React.FC = (props) => {
-  const [account_balances, setAccountBalances] = useState<AccountBalanceInterface[]>([]);
+  const [account_balances, setAccountBalances] = useState<AccountBalanceInterface[]>();
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -21,6 +21,37 @@ const Users : React.FC = (props) => {
     }
     getAccountBalances()
   }, [])
+
+  if(!account_balances || account_balances.length === 0)  {
+    return(
+      <>
+      {
+        <div className="column">
+          <div className="columns is-multiline">
+          <div className="column is-one-quarter">
+            <div className="card">
+              <header className="card-header">
+                <p className="card-header-title">
+                  {
+                    !account_balances ? 'Loading ...' : 'Not available'
+                  }
+                </p>
+              </header>
+              <div className="card-content">
+                <div className="content">
+                  {
+                    !account_balances ? 'Loading ...' : 'Please add money'
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+      }
+      </>
+    )
+  }
 
   return(
     <>

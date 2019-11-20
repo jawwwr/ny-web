@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const api_url = 'https://api.sandbox.transferwise.tech/v1'
+const api_url = 'https://api.transferwise.com/v1'
 
 const API = (method:any, url:any, body?:any) => {
   const response = axios({
@@ -8,7 +8,7 @@ const API = (method:any, url:any, body?:any) => {
     url: `${api_url}/${url}`,
     data: body,
     headers: {
-      Authorization: `Bearer ${process.env.REACT_APP_TRANSFERWISE_TOKEN_SB}`,
+      Authorization: `Bearer ${process.env.REACT_APP_TRANSFERWISE_TOKEN_LIVE}`,
     },
   });
   return response

@@ -6,7 +6,7 @@ import Admin from "pages/Admin";
 const Transfers: React.FC = () => {
   const [transfers, setTransfers] = useState();
   const [error, setError] = useState("");
-
+  console.log(error)
   useEffect(() => {
     const getTransfers = async () => {
       try {
@@ -25,17 +25,18 @@ const Transfers: React.FC = () => {
       <div id="Transfers">
         <div className="title is-4">Transfers</div>
         {
-          !transfers ?
+          !transfers || transfers.length === 0 ?
             <div className="columns">
                 <div className="column">
                   <div className="card">
                     <header className="card-header">
-                      <p className="card-header-title">Loading ...</p>
+                      <p className="card-header-title">
+                        {
+                          !transfers ?
+                          'Loading ...' : 'No transfer available'
+                        }
+                      </p>
                     </header>
-                    <div className="card-content">
-                      <div className="content">
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
