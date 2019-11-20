@@ -18,15 +18,13 @@ pipeline {
                 echo 'Building..'
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
         stage('Deploy') {
-            steps {
-                echo 'Deploying....'
-            }
+            S3_BUCKET = sh (
+                script: """
+                    aws ssm get-parameter --name ny-web-master-bucket' --query Parameter.Value | sed 's/\"//g'
+                returnStdout: true
+                ).trim()
+            console.log($S3_BUCKET)
         }
     }
 }
