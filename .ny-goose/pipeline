@@ -20,7 +20,7 @@ pipeline {
         }
         S3_BUCKET = sh (
             script: """
-                aws ssm get-parameter --name ny-web-master-bucket' --query Parameter.Value | sed 's/\"//g'
+                aws ssm get-parameter --name ny-web-master-bucket --query Parameter.Value | sed 's/\"//g'
             returnStdout: true
             ).trim()
 
