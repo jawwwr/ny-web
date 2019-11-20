@@ -1,23 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import useFetch from 'fetch-suspense';
-import { UserInterface } from './types'
+import React from 'react'
+import { UserInterface, UsersIProps } from './types'
 
-const Users : React.FC = (props) => {
-  const [response] = useState(
-    useFetch('https://reqres.in/api/users?page=1', { method: 'GET' }, { metadata: true })
-  )
-  const [users, setUsers] = useState<UserInterface[]>([]);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    if(response.ok) {
-      const { data } = response.response as any
-      setUsers(data)
-    } else {
-      setError(response.statusText)
-    }
-  }, [response])
-
+const Users : React.FC<UsersIProps> = (props :UsersIProps) => {
+  const { users, error } : any = props
   return(
       <div className="card">
         <header className="card-header">
@@ -25,8 +10,12 @@ const Users : React.FC = (props) => {
             Users
           </p>
         </header>
-        <div className="card-table">
+        <div className="card-content">
           <div className="content">
+            {
+              !users || users.length === 0 ?
+                'Loading ...' : ''
+            }
             <table className="table is-fullwidth is-striped is-hoverable">
               <tbody>
                 {
@@ -35,7 +24,7 @@ const Users : React.FC = (props) => {
                 <tr key={key}>
                   <td style={{width: '15%'}}>
                     <figure className="image is-32x32">
-                      <img className="is-rounded" src={user.avatar} />
+                      <img className="is-rounded" src={user.avatar} alt={`${user.first_name} ${user.last_name}`}/>
                     </figure>
                   </td>
                   <td>

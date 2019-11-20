@@ -6,6 +6,9 @@ export interface UserInterface {
   avatar: string
 }
 
-export  interface UsersInterface {
-  data?: UserInterface[]
+export  interface UsersIProps {
+  users?: UserInterface[]
+  error?: string | object
 }
+
+
