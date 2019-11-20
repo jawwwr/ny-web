@@ -21,7 +21,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploy..'
-                S3_BUCKET = sh aws ssm get-parameter --name ny-web-master-bucket --query Parameter.Value | sed 's/\"//g'
+                S3_BUCKET = sh (aws ssm get-parameter --name ny-web-master-bucket --query Parameter.Value | sed 's/\"//g')
                 echo $S3_BUCKET
             }
         }
