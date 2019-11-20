@@ -19,7 +19,7 @@ node {
         """
         S3_BUCKET = sh (
             script: """
-                aws ssm get-parameter --name ny-web-master-bucket --query Parameter.Value | sed 's/\"//g'
+                aws --version
             """,
             returnStdout: true
         ).trim()
