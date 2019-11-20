@@ -23,10 +23,11 @@ pipeline {
                 aws ssm get-parameter --name ny-web-master-bucket' --query Parameter.Value | sed 's/\"//g'
             returnStdout: true
             ).trim()
-        console.log($S3_BUCKET)
+
         stage('Deploy') {
             steps {
                 echo 'Deploy..'
+                echo $S3_BUCKET
             }
         }
     }
