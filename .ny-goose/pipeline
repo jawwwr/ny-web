@@ -6,6 +6,12 @@ node {
             echo "${NY_KEY}"
         """
     }
+    stage('hello AWS') {
+        steps {
+            def identity = awsIdentity()
+            echo $identity
+        }
+    }
     stage ('Checkout') {
         checkout scm
     }
@@ -17,7 +23,6 @@ node {
     stage('Deploy') {
         sh """
             echo 'Deploy..'
-            aws --version
         """
     }
 }
