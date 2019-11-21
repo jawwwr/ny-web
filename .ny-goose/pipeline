@@ -8,8 +8,12 @@ node {
     }
     stage('hello AWS') {
         steps {
-            def identity = awsIdentity()
-            echo $identity
+            withAWS(role:'ec2-s3-ssm') {
+                sh 'echo "hello KB">hello.txt'
+                s3Upload acl: 'Public', bucket: 'ny-web-master-bucket', file: 'hello.txt'
+                s3Download bucket: 'ny-web-master-bucket', file: 'downloadedHello.txt', path: 'hello.txt'
+                sh 'cat downloadedHello.txt'
+            }
         }
     }
     stage ('Checkout') {
