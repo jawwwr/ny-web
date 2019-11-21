@@ -23,9 +23,9 @@ node {
             ny-web cp -r /usr/src/app/build/ /web-app
 
             docker run \
-            -v $PWD/build :/data \
+            -v $PWD/build \
             garland/aws-cli-docker \
-            aws s3 sync --acl public-read --sse --delete /data s3://ny-web-master-bucket/
+            aws s3 sync --acl public-read --sse --delete $PWD/build s3://ny-web-master-bucket/
         """
     }
     stage('Done') {
