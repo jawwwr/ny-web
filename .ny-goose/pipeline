@@ -6,13 +6,11 @@ node {
         """
     }
     stage('hello AWS') {
-        steps {
-            withAWS(credentials:'jwr-compute') {
-                sh 'echo "hello KB">hello.txt'
-                s3Upload acl: 'Public', bucket: 'ny-web-master-bucket', file: 'hello.txt'
-                s3Download bucket: 'ny-web-master-bucket', file: 'downloadedHello.txt', path: 'hello.txt'
-                sh 'cat downloadedHello.txt'
-            }
+        withAWS(credentials:'jwr-compute') {
+            sh 'echo "hello KB">hello.txt'
+            s3Upload acl: 'Public', bucket: 'ny-web-master-bucket', file: 'hello.txt'
+            s3Download bucket: 'ny-web-master-bucket', file: 'downloadedHello.txt', path: 'hello.txt'
+            sh 'cat downloadedHello.txt'
         }
     }
     stage ('Checkout') {
