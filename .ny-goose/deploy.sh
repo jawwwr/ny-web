@@ -3,7 +3,8 @@ VOLUME=$PWD':/web-app/'
 
 rm -fr $PWD'/dist/*'
 
-curl -X POST -H 'Content-type: application/json' --data '{
+
+curl -X POST -s 'https://hooks.slack.com/services/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' -d '{
   "blocks": [
     {
       "type": "section",
@@ -18,8 +19,7 @@ curl -X POST -H 'Content-type: application/json' --data '{
       ]
     }
   ]
-}' https://hooks.slack.com/services/TQEK0LJTU/BQVKNL2H4/HGdsnM8ImywoaXOOmTawq0a
-
+}'
 
 
 docker build --no-cache \
