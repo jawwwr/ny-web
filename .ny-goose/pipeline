@@ -1,30 +1,27 @@
 node {
     stage('Initialize') {
         sh """
-            echo 'Started...'
+            echo 'Broadcast started on slack!'
             echo "${JOB_NAME} - ${BUILD_NUMBER} - ${BUILD_ID} on ${JENKINS_URL}"
-            docker info
         """
-    }
-    stage('hello AWS') {
-        withAWS(credentials:'jwr-compute') {
-            sh 'echo "hello KB" > index.html'
-            s3Upload acl: 'PublicRead', bucket: 'ny-web-master-bucket', file: 'index.html'
-            s3Download bucket: 'ny-web-master-bucket', file: 'downloadedIndex.html.txt', path: 'index.html'
-            sh 'cat downloadedIndex.html.txt'
-        }
     }
     stage ('Checkout') {
         checkout scm
     }
     stage('Build') {
         sh """
-            echo 'Building..'
+            docker build . -t ny-web
         """
     }
     stage('Deploy') {
+        withAWS(credentials:'jwr-compute') {
+            s3Upload acl: 'PublicRead', bucket: 'ny-web-master-bucket', file: './dist'
+        }
+    }
+    stage('Done') {
         sh """
-            echo 'Deploy..'
+            echo 'Broadcast done on slack!'
+            echo "Web App: http://ny-web-master-bucket.s3-website-ap-southeast-1.amazonaws.com"
         """
     }
 }
