@@ -14,15 +14,10 @@ node {
             -t ny-web -f Dockerfile .
         """
     }
-    stage('Run') {
-        sh """
-
-        """
-    }
     stage('Deploy') {
         sh """
-            VOLUME = "$PWD':/web-app/"
-            
+            VOLUME=$PWD':/web-app/'
+
             rm -fr $PWD'/build/*'
 
             docker run \
