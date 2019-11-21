@@ -1,6 +1,4 @@
 node {
-    def VOLUME = $PWD':/web-app/'
-
     stage('Initialize') {
         sh """
             echo 'Broadcast started on slack!'
@@ -18,16 +16,21 @@ node {
     }
     stage('Run') {
         sh """
-        echo ${VOLUME}
+
+        """
+    }
+    stage('Deploy') {
+        sh """
+            VOLUME = "$PWD':/web-app/"
+            
+            rm -fr $PWD'/build/*'
+
             docker run \
             --name ny-web-app \
             --rm \
             -v $VOLUME \
             ny-web cp -r /usr/src/app/build/ /web-app
-        """
-    }
-    stage('Deploy') {
-        sh """
+
             docker run \
             -v $PWD/build :/data \
             garland/aws-cli-docker \
