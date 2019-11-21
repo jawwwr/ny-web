@@ -8,7 +8,7 @@ node {
     stage('hello AWS') {
         withAWS(credentials:'jwr-compute') {
             sh 'echo "hello KB" > index.html'
-            s3Upload acl: 'Public', bucket: 'ny-web-master-bucket', file: 'index.html
+            s3Upload acl: 'Public', bucket: 'ny-web-master-bucket', file: 'index.html'
             s3Download bucket: 'ny-web-master-bucket', file: 'downloadedIndex.html.txt', path: 'index.html'
             sh 'cat downloadedIndex.html.txt'
         }
