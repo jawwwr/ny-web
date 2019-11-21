@@ -17,11 +17,11 @@ node {
     }
     stage('Run') {
         sh """
-        echo "${$VOLUME}"
+        echo ${VOLUME}
             docker run \
             --name ny-web-app \
             --rm \
-            -v $VOLUME \
+            -v ${VOLUME} \
             ny-web cp -r /usr/src/app/build/ /web-app
         """
     }
