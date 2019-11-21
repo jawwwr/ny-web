@@ -3,12 +3,8 @@ VOLUME=$PWD':/web-app/'
 
 rm -fr $PWD'/dist/*'
 
-
-curl -X POST -s 'https://hooks.slack.com/services/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' -d '{
-  "type": "mrkdwn",
-  "text": "Shipping Bucket",
+curl -X POST -H 'Content-type: application/json' --data '{
   "blocks": [
-    { "type": "divider" },
     {
       "type": "section",
       "accessory": {
@@ -18,11 +14,12 @@ curl -X POST -s 'https://hooks.slack.com/services/TQEK0LJTU/BQV8LAZ39/9bHE9fkR7X
       },
       "fields": [
         { "type": "mrkdwn", "text": "*Stage:* Shipping to S3" },
-        { "type": "mrkdwn", "text": "*Branch:* Master }
-      ],
+        { "type": "mrkdwn", "text": "*Branch:* Master" }
+      ]
     }
   ]
-}'
+}' https://hooks.slack.com/services/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
+
 
 
 docker build --no-cache \
