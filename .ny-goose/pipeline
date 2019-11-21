@@ -16,9 +16,10 @@ node {
     }
     stage('Run') {
         sh """
+            ll
             docker run \
             --rm \
-            ny-web cp -r /usr/src/app/dist/ /app
+            ny-web cp -r /usr/src/app/build/ /app
         """
     }
     stage('Deploy') {
