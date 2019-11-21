@@ -4,7 +4,7 @@ VOLUME=$PWD':/web-app/'
 rm -fr $PWD'/dist/*'
 
 
-curl -X POST -s 'https://hooks.slack.com/services/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' -d '{
+curl -X POST -s 'https://hooks.slack.com/services/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' -d '{
   "blocks": [
     {
       "type": "section",
