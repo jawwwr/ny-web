@@ -4,21 +4,34 @@ VOLUME=$PWD':/web-app/'
 rm -fr $PWD'/dist/*'
 
 
-curl -X POST -H 'Content-type: application/json' -s https://hooks.slack.com/services/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 -d '{
-  "blocks": [
-    {
-      "type": "section",
-      "accessory": {
-        "type": "image",
-        "image_url": "https://cultofthepartyparrot.com/parrots/shipitparrot.gif",
-        "alt_text": "Shipping to S3"
-      },
-      "fields": [
-        { "type": "mrkdwn", "text": "*Branch:* Master" }
-        { "type": "mrkdwn", "text": "*App Link:* http://ny-web-master-bucket.s3-website-ap-southeast-1.amazonaws.com" },
-      ]
-    }
-  ]
+curl -X POST -H 'Content-type: application/json' -s https://hooks.slack.com/services/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 -d '{
+	"blocks": [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "Shipping to S3"
+			}
+		},
+		{
+			"type": "section",
+            "accessory": {
+                "type": "image",
+                "image_url": "https://cultofthepartyparrot.com/parrots/shipitparrot.gif",
+                "alt_text": "Shipping to S3"
+              },
+			"fields": [
+				{
+					"type": "mrkdwn",
+					"text": "*Branch:*\n Master"
+				},
+				{
+					"type": "mrkdwn",
+					"text": "*App Link:*\n <http://ny-web-master-bucket.s3-website-ap-southeast-1.amazonaws.com | Web App>"
+				}
+			]
+		}
+	]
 }'
 
 
