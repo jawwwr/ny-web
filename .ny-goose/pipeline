@@ -3,7 +3,6 @@ node {
         sh """
             echo 'Started...'
             echo "${JOB_NAME} - ${BUILD_NUMBER} - ${BUILD_ID} on ${JENKINS_URL}"
-            echo "${NY_KEY}"
         """
     }
     stage('hello AWS') {
