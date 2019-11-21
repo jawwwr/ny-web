@@ -10,13 +10,14 @@ node {
     }
     stage('Build') {
         sh """
-            docker build . -t ny-web
+            npm install
+            npm run build
         """
     }
     stage('Deploy') {
         withAWS(credentials:'jwr-compute') {
             s3Delete bucket: 'ny-web-master-bucket', file: '/', path: '/'
-            s3Upload acl: 'PublicRead', bucket: 'ny-web-master-bucket', file: 'build/', path: '/'
+            s3Upload acl: 'PublicRead', bucket: 'ny-web-master-bucket', file: 'build', path: '/'
         }
     }
     stage('Done') {
