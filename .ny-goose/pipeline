@@ -16,14 +16,10 @@ node {
     }
     stage('Deploy') {
         sh """
-            def VOLUME=$PWD':/web-app/'
-
             rm -fr $PWD'/build/*'
-
             docker run \
             --name ny-web-app \
             --rm \
-            -v "${VOLUME}" \
             ny-web cp -r /usr/src/app/build/ /web-app
 
             docker run \
