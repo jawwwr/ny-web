@@ -4,7 +4,7 @@ VOLUME=$PWD':/web-app/'
 rm -fr $PWD'/dist/*'
 
 
-curl -X POST -H 'Content-type: application/json' -s 'https://hooks.slack.com/services/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' -d '{
+curl -X POST -H 'Content-type: application/json' -s https://hooks.slack.com/services/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 -d '{
   "blocks": [
     {
       "type": "section",
@@ -14,8 +14,8 @@ curl -X POST -H 'Content-type: application/json' -s 'https://hooks.slack.com/ser
         "alt_text": "Shipping to S3"
       },
       "fields": [
-        { "type": "mrkdwn", "text": "*Stage:* Shipping to S3" },
         { "type": "mrkdwn", "text": "*Branch:* Master" }
+        { "type": "mrkdwn", "text": "*App Link:* http://ny-web-master-bucket.s3-website-ap-southeast-1.amazonaws.com" },
       ]
     }
   ]
