@@ -15,18 +15,17 @@ node {
         """
     }
     stage('Deploy') {
-        sh """
-            rm -fr $PWD'/build/*'
-            docker run \
-            --name ny-web-app \
-            --rm \
-            ny-web cp -r /usr/src/app/build/ /web-app
-
-            docker run \
-            -v $PWD/build \
-            garland/aws-cli-docker \
-            aws s3 sync --acl public-read --sse --delete $PWD/build s3://ny-web-master-bucket/
-        """
+        script {
+            try {
+                sh (
+                    script: """
+                        sh .ny-goose/deploy.sh
+                    """,
+                    returnStdout: true
+                )
+            } catch (e) {
+                throw e
+            }
     }
     stage('Done') {
         sh """
