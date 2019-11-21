@@ -3,7 +3,6 @@ node {
         sh """
             echo 'Broadcast started on slack!'
             echo "${JOB_NAME} - ${BUILD_NUMBER} - ${BUILD_ID} on ${JENKINS_URL}"
-            VOLUME=$PWD':/app/'
         """
     }
     stage ('Checkout') {
@@ -19,7 +18,6 @@ node {
         sh """
             docker run \
             --rm \
-            -v $VOLUME \
             ny-web cp -r /usr/src/app/dist/ /app
         """
     }
