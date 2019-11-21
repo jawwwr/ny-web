@@ -1,6 +1,7 @@
 node {
     stage('Initialize') {
         sh """
+            VOLUME=$PWD':/web-app/'
             echo 'Broadcast started on slack!'
             echo "${JOB_NAME} - ${BUILD_NUMBER} - ${BUILD_ID} on ${JENKINS_URL}"
         """
@@ -18,13 +19,14 @@ node {
         sh """
             docker run \
             --rm \
-            ny-web cp -r /usr/src/app/build/ $PWD
+            -v $VOLUME \
+            ny-web cp -r /usr/src/app/build/ /web-app
         """
     }
     stage('Deploy') {
         sh """
             docker run \
-            -v $PWD :/data \
+            -v $PWD/build :/data \
             garland/aws-cli-docker \
             aws s3 sync --acl public-read --sse --delete /data s3://ny-web-master-bucket/
         """
