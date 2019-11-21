@@ -10,7 +10,7 @@ node {
     }
     stage('Build') {
         sh """
-            docker build --no-cache \
+            docker build \
             -t ny-web -f Dockerfile .
         """
     }
@@ -26,7 +26,7 @@ node {
             docker run \
             -v $PWD/dist:/data \
             garland/aws-cli-docker \
-            aws s3 sync --acl public-read --sse --delete /data s3://ny-web-master-bucket/
+            aws s3 ls
         """
     }
     stage('Done') {
