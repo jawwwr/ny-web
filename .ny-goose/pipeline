@@ -8,7 +8,7 @@ node {
     }
     stage('hello AWS') {
         steps {
-            withAWS(role:'ec2-s3-ssm') {
+            withAWS(credentials:'jwr-compute') {
                 sh 'echo "hello KB">hello.txt'
                 s3Upload acl: 'Public', bucket: 'ny-web-master-bucket', file: 'hello.txt'
                 s3Download bucket: 'ny-web-master-bucket', file: 'downloadedHello.txt', path: 'hello.txt'
