@@ -16,7 +16,7 @@ node {
     }
     stage('Deploy') {
         sh """
-            VOLUME=$PWD':/web-app/'
+            def VOLUME=$PWD':/web-app/'
 
             rm -fr $PWD'/build/*'
 
