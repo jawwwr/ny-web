@@ -18,13 +18,13 @@ node {
         sh """
             docker run \
             --rm \
-            ny-web cp -r /usr/src/app/build/ $PWD/web-app
+            ny-web cp -r /usr/src/app/build/ $PWD
         """
     }
     stage('Deploy') {
         sh """
             docker run \
-            -v $PWD/web-app :/data \
+            -v $PWD :/data \
             garland/aws-cli-docker \
             aws s3 sync --acl public-read --sse --delete /data s3://ny-web-master-bucket/
         """
