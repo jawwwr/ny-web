@@ -3,23 +3,7 @@ VOLUME=$PWD':/web-app/'
 
 rm -fr $PWD'/dist/*'
 
-
-curl -X POST -s 'https://hooks.slack.com/services/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' -d '{
-  "blocks": [
-    {
-      "type": "section",
-      "accessory": {
-        "type": "image",
-        "image_url": "https://cultofthepartyparrot.com/parrots/shipitparrot.gif",
-        "alt_text": "Shipping to S3"
-      },
-      "fields": [
-        { "type": "mrkdwn", "text": "*Stage:* Shipping to S3" },
-        { "type": "mrkdwn", "text": "*Branch:* Master" }
-      ]
-    }
-  ]
-}'
+curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World! from Jenkins"}' https://hooks.slack.com/services/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
 
 
 docker build --no-cache \
