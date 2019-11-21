@@ -1,14 +1,14 @@
 pipeline {
   agent any
     
-  tools {nodejs "node"}
+  tools {nodejs 'node'}
     
   stages {
     stage('Initialize') {
       steps {
         sh """
             echo 'Broadcast started on slack!'
-            echo "${JOB_NAME} - ${BUILD_NUMBER} - ${BUILD_ID} on ${JENKINS_URL}"
+            echo '${JOB_NAME} - ${BUILD_NUMBER} - ${BUILD_ID} on ${JENKINS_URL}'
         """
       }
     }
@@ -32,7 +32,7 @@ pipeline {
  
     stage('Deploy') {
       steps {
-        withAWS(credentials:'jwr-compute') {
+        withAWS(credentials: 'jwr-compute', region: 'ap-southeast-1') {
             s3Delete bucket: 'ny-web-master-bucket', file: '/', path: '/'
             s3Upload acl: 'PublicRead', bucket: 'ny-web-master-bucket', file: 'build', path: '/'
         }
