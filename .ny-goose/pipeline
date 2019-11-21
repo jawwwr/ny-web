@@ -1,7 +1,8 @@
 node {
+    def VOLUME = $PWD':/web-app/'
+
     stage('Initialize') {
         sh """
-            VOLUME=$PWD':/web-app/'
             echo 'Broadcast started on slack!'
             echo "${JOB_NAME} - ${BUILD_NUMBER} - ${BUILD_ID} on ${JENKINS_URL}"
         """
@@ -21,7 +22,7 @@ node {
             docker run \
             --name ny-web-app \
             --rm \
-            -v ${VOLUME} \
+            -v $VOLUME \
             ny-web cp -r /usr/src/app/build/ /web-app
         """
     }
