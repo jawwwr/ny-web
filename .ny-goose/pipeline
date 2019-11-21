@@ -15,7 +15,8 @@ node {
     }
     stage('Deploy') {
         withAWS(credentials:'jwr-compute') {
-            s3Upload acl: 'PublicRead', bucket: 'ny-web-master-bucket', file: './dist'
+            s3s3Delete bucket: 'ny-web-master-bucket', file: '/' path: '/'
+            s3Upload acl: 'PublicRead', bucket: 'ny-web-master-bucket', file: 'build/' path: '/'
         }
     }
     stage('Done') {
