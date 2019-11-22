@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const api_url = 'https://reqres.in/api'
+const api_url = process.env.NY_API_HOST
 
 const API = (method:any, url:any, body?:any) => {
   const response = axios({

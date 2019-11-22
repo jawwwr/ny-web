@@ -1,65 +1,11 @@
 node {
-    def ENV_NAME = 'beta'
-    stage('Initialize') {
-        sh """
-            echo 'Broadcast started on slack!'
-            echo "${JOB_NAME} - ${BUILD_NUMBER} - ${BUILD_ID} on ${JENKINS_URL}"
-            printenv
-        """
-    }
-    stage ('Checkout') {
-        checkout scm
-
-        CONTAINER_NAME = sh (
-            script: "if [ $JOB_BASE_NAME = master ]; then echo 'master'; else echo 'beta'; fi",
-            returnStdout: true
-        ).trim()
-
-        script {
-            if (JOB_BASE_NAME == 'master') {
-                ENV_NAME = 'master'
-            } else {
-                ENV_NAME = 'beta'
-            }
-        }
-
-        sh """
-            if [ $ENV_NAME = master ] ; then
-                echo 'NY_API_HOST=http://3.0.178.112' > .env
-                echo 'http://3.0.178.112' > .ny-goose/ny-api-host.txt
-
-                echo 'NY_S3_BUCKET=s3://ny-web-master/' > .env
-                echo 's3://ny-web-master/' > .ny-goose/ny-s3-bucket.txt
-
-                echo 'NY_S3_LINK=http://ny-web-master.s3-website-ap-southeast-1.amazonaws.com' > .env
-                echo 'http://ny-web-master.s3-website-ap-southeast-1.amazonaws.com' > .ny-goose/ny-s3-link.txt
-
-            elif [ $ENV_NAME = beta ] ; then
-                echo 'NY_API_HOST=http://3.0.178.112:3000' > .env
-                echo 'http://3.0.178.112:3000' > .ny-goose/ny-api-host.txt
-
-                echo 'NY_S3_BUCKET=s3://ny-web-beta/' > .env
-                echo 's3://ny-web-beta/' > .ny-goose/ny-s3-bucket.txt
-
-                echo 'NY_S3_LINK=http://ny-web-beta.s3-website-ap-southeast-1.amazonaws.com' > .env
-                echo 'http://ny-web-beta.s3-website-ap-southeast-1.amazonaws.com' > .ny-goose/ny-s3-link.txt
-            fi
-
-            echo $CONTAINER_NAME > .ny-goose/ny-container-name.txt
-        """
-    }
-    stage('Build') {
-        sh """
-            docker build \
-            -t ny-web -f Dockerfile .
-        """
-    }
-    stage('Deploy') {
+    def ENV_NAME = 'intr'
+    stage('Initializing') {
         script {
             try {
                 sh (
                     script: """
-                        sh .ny-goose/deploy.sh
+                        sh .ny-goose/init.sh
                     """,
                     returnStdout: true
                 )
@@ -68,9 +14,117 @@ node {
             }
         }
     }
-    stage('Done') {
+    stage ('Loading Ship') {
+        checkout scm
+        script {
+            try {
+                sh (
+                    script: """
+                        sh .ny-goose/loading.sh
+                    """,
+                    returnStdout: true
+                )
+            } catch (e) {
+                throw e
+            }
+        }
+        CONTAINER_NAME = sh (
+            script: """
+                if [ $JOB_BASE_NAME = master ]; then 
+                    echo 'master';
+                elif [ $JOB_BASE_NAME = uat ] ; then
+                    echo 'uat';
+                else
+                    echo 'intr';
+                fi
+            """,
+            returnStdout: true
+        ).trim()
+
+        script {
+            if (JOB_BASE_NAME == 'master') {
+                ENV_NAME = 'master'
+            } else if(JOB_BASE_NAME == 'uat') {
+                ENV_NAME = 'uat'
+            } else {
+                ENV_NAME = 'intr'
+            }
+        }
+
         sh """
-            echo 'Broadcast done on slack!'
+            if [ $ENV_NAME = master ] ; then
+                echo 'NY_API_HOST=http://3.0.178.112' > .env
+                echo 'http://3.0.178.112' > .ny-goose/ny-api-host.txt
+
+                echo 'NY_S3_BUCKET=s3://ny-web-live/' > .env
+                echo 's3://ny-web-live/' > .ny-goose/ny-s3-bucket.txt
+
+                echo 'NY_S3_LINK=http://ny-web-live.s3-website-ap-southeast-1.amazonaws.com' > .env
+                echo 'http://ny-web-live.s3-website-ap-southeast-1.amazonaws.com' > .ny-goose/ny-s3-link.txt
+
+            elif [ $ENV_NAME = uat ] ; then
+                echo 'NY_API_HOST=http://3.0.178.112:3000' > .env
+                echo 'http://3.0.178.112:3000' > .ny-goose/ny-api-host.txt
+
+                echo 'NY_S3_BUCKET=s3://ny-web-uat/' > .env
+                echo 's3://ny-web-uat/' > .ny-goose/ny-s3-bucket.txt
+
+                echo 'NY_S3_LINK=http://ny-web-uat.s3-website-ap-southeast-1.amazonaws.com' > .env
+                echo 'http://ny-web-uat.s3-website-ap-southeast-1.amazonaws.com' > .ny-goose/ny-s3-link.txt
+            else 
+                echo 'NY_API_HOST=http://3.0.178.112:4000' > .env
+                echo 'http://3.0.178.112:4000' > .ny-goose/ny-api-host.txt
+
+                echo 'NY_S3_BUCKET=s3://ny-web-intr/' > .env
+                echo 's3://ny-web-intr/' > .ny-goose/ny-s3-bucket.txt
+
+                echo 'NY_S3_LINK=http://ny-web-intr.s3-website-ap-southeast-1.amazonaws.com' > .env
+                echo 'http://ny-web-intr.s3-website-ap-southeast-1.amazonaws.com' > .ny-goose/ny-s3-link.txt
+            fi
+
+            echo $CONTAINER_NAME > .ny-goose/ny-container-name.txt
         """
+    }
+    stage('Building') {
+        script {
+            try {
+                sh (
+                    script: """
+                        sh .ny-goose/building.sh
+                    """,
+                    returnStdout: true
+                )
+            } catch (e) {
+                throw e
+            }
+        }
+    }
+    stage('Shipping') {
+        script {
+            try {
+                sh (
+                    script: """
+                        sh .ny-goose/shipping.sh
+                    """,
+                    returnStdout: true
+                )
+            } catch (e) {
+                throw e
+            }
+        }
+    }
+    stage('Shipped') {
+        script {
+            try {
+                sh (
+                    script: """
+                        sh .ny-goose/shipped.sh
+                    """,
+                    returnStdout: true
+                )
+            } catch (e) {
+                throw e
+            }
+        }
     }
 }

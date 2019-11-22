@@ -27,10 +27,6 @@ curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 				{
 					"type": "mrkdwn",
 					"text": "*Branch:*\n '${BRANCH_NAME}'"
-				},
-				{
-					"type": "mrkdwn",
-					"text": "*App Link:*\n <'$NY_S3_BUCKET' | Web App: '$CONTAINER_NAME'>"
 				}
 			]
 		}
@@ -51,6 +47,7 @@ docker run \
 docker run \
 	--env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
 	--env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
+	--env NY_API_HOST= $NY_API_HOST\
   -v $PWD/build:/data \
   garland/aws-cli-docker \
   aws s3 sync --acl public-read --sse --delete /data $NY_S3_BUCKET
