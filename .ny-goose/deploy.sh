@@ -4,7 +4,7 @@ VOLUME=$PWD':/web-app/'
 rm -fr $PWD'/dist/*'
 
 
-curl -X POST -H 'Content-type: application/json' -s https://hooks.slack.com/services/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 -d '{
+curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK $-d '{
 	"blocks": [
 		{
 			"type": "section",
