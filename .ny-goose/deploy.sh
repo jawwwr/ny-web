@@ -35,19 +35,19 @@ curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 }'
 
 
-docker build  \
+docker build --no-cache \
   -t ny-web \
   -f Dockerfile .
 
 docker run \
   --name ny-web-app \
   --rm \
-	--env-file .env \
   -v $VOLUME \
   ny-web cp -r /usr/src/app/build/ /web-app 
 
 docker run \
-	--env-file .env \
+	--env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+	--env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
   -v $PWD/build:/data \
   garland/aws-cli-docker \
   aws s3 sync --acl public-read --sse --delete /data s3://ny-web-master/
