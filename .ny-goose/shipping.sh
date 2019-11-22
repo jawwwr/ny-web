@@ -40,12 +40,14 @@ docker build --no-cache \
   -f Dockerfile .
 
 docker run \
+	--env NY_API_HOST=$NY_API_HOST \
   --name ny-web-app \
   --rm \
   -v $VOLUME \
   ny-web cp -r /usr/src/app/build/ /web-app 
 
 docker run \
+	--env NY_API_HOST=$NY_API_HOST \
 	--env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
 	--env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
   -v $PWD/build:/data \

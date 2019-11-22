@@ -16,7 +16,7 @@ curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 			"type": "section",
 				"accessory": {
 						"type": "image",
-						"image_url": "https://cultofthepartyparrot.com/parrots/hd/stableparrot.gif",
+						"image_url": "https://cultofthepartyparrot.com/parrots/hd/dealwithitparrot.gif",
 						"alt_text": "Shipped: '${JOB_NAME}'"
 					},
 			"fields": [
