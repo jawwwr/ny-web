@@ -4,7 +4,7 @@ VOLUME=$PWD':/web-app/'
 rm -fr $PWD'/dist/*'
 
 
-curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK $-d '{
+curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 	"blocks": [
 		{
 			"type": "section",
@@ -27,7 +27,7 @@ curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK $-d '{
 				},
 				{
 					"type": "mrkdwn",
-					"text": "*App Link:*\n <http://ny-web-master-bucket.s3-website-ap-southeast-1.amazonaws.com | Web App>"
+					"text": "*App Link:*\n <http://ny-web-master.s3-website-ap-southeast-1.amazonaws.com | Web App>"
 				}
 			]
 		}
@@ -48,4 +48,4 @@ docker run \
 docker run \
   -v $PWD/build:/data \
   garland/aws-cli-docker \
-  aws --version
+  aws s3 sync --acl public-read --sse --delete /data s3://ny-web-master/
