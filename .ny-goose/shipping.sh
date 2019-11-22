@@ -7,6 +7,10 @@ CONTAINER_NAME=$(cat .ny-goose/ny-container-name.txt)
 
 rm -fr $PWD'/dist/*'
 
+echo NY_API_HOST
+echo NY_S3_BUCKET
+echo NY_S3_LINK
+
 curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 	"blocks": [
 		{
@@ -40,7 +44,7 @@ docker build --no-cache \
 
 docker run \
   --name ny-web-app \
-	--env NY_API_HOST= $NY_API_HOST \
+	--env NY_API_HOST=$NY_API_HOST \
   --rm \
   -v $VOLUME \
   ny-web cp -r /usr/src/app/build/ /web-app 
@@ -48,7 +52,7 @@ docker run \
 docker run \
 	--env AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
 	--env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
-	--env NY_API_HOST= $NY_API_HOST \
+	--env NY_API_HOST=$NY_API_HOST \
   -v $PWD/build:/data \
   garland/aws-cli-docker \
   aws s3 sync --acl public-read --sse --delete /data $NY_S3_BUCKET
