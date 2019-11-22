@@ -26,11 +26,11 @@ curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 			"fields": [
 				{
 					"type": "mrkdwn",
-					"text": "*Branch* `'${BRANCH_NAME}'`"
+					"text": "*Branch:*\n '${BRANCH_NAME}'"
 				},
 				{
 					"type": "mrkdwn",
-					"text": "*App Link:*\n <'$S3_BUCKET' | Web App: '$CONTAINER_NAME'>"
+					"text": "*App Link:*\n <'$NY_S3_BUCKET' | Web App: '$CONTAINER_NAME'>"
 				}
 			]
 		}
