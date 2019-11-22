@@ -1,6 +1,7 @@
 node {
     def ENV_NAME = 'intr'
     stage('Initializing') {
+        checkout scm
         script {
             try {
                 sh (
@@ -15,7 +16,6 @@ node {
         }
     }
     stage ('Loading Ship') {
-        checkout scm
         script {
             try {
                 sh (
