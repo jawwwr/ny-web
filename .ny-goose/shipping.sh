@@ -40,6 +40,7 @@ docker build --no-cache \
 
 docker run \
   --name ny-web-app \
+	--env NY_API_HOST= $NY_API_HOST \
   --rm \
   -v $VOLUME \
   ny-web cp -r /usr/src/app/build/ /web-app 
