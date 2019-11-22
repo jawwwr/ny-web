@@ -10,7 +10,7 @@ const Transfers: React.FC = () => {
   useEffect(() => {
     const getTransfers = async () => {
       try {
-        const response = await API("GET", "transfers?offset=0&limit=100");
+        const response = await API("GET", "v1/transfers?offset=0&limit=100");
         setTransfers(response.data.reverse());
       } catch (api_error) {
         setError(api_error);

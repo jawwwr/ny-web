@@ -13,7 +13,7 @@ const Users : React.FC = (props) => {
   useEffect(() => {
     const getAccountBalances = async () => {
         try {
-          const response = await API('GET', `borderless-accounts?profileId=${profile_id}`)
+          const response = await API('GET', `v1/borderless-accounts?profileId=${profile_id}`)
           setAccountBalances(response.data)
         } catch (api_error) {
           setError(api_error)

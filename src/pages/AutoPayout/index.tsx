@@ -5,6 +5,7 @@ import { toNumber } from 'lodash'
 import API from 'api'
 import status_translate from 'utils/translations'
 import Admin from 'pages/Admin';
+import './styles.scss'
 
 const contracts = [
   {
@@ -13,75 +14,75 @@ const contracts = [
     people: [
       {
         recipient: {
-          id: 13739795,
-          currency: "GBP",
+          id: 74565782,
+          currency: "USD",
         }
       },
     ]
   },
   {
     id: 1,
-    name: 'Lorem Ipsum Keme',
+    name: 'Lorem',
     people: [
       {
         recipient: {
-          id: 13739795,
-          currency: "GBP",
+          id: 74565782,
+          currency: "USD",
         }
       },
     ]
   },
   {
     id: 2,
-    name: 'Thunder Wrangler',
+    name: 'Thunder',
     people: [
       {
         recipient: {
-          id: 13737997,
-          currency: "GBP",
+          id: 74565782,
+          currency: "USD",
         }
       },
     ]
   },
   {
     id: 3,
-    name: 'Wrangler Guash',
+    name: 'Wrangler',
     people: [
       {
         recipient: {
-          id: 13737997,
-          currency: "GBP",
+          id: 74565782,
+          currency: "USD",
         }
       },
     ]
   },
   {
     id: 4,
-    name: 'Chipipay Shonget',
+    name: 'Chipipay',
     people: [
       {
         recipient: {
-          id: 13737997,
-          currency: "GBP",
+          id: 74565782,
+          currency: "USD",
         }
       },
     ]
   },
   {
     id: 5,
-    name: 'Makyonget Mike',
+    name: 'Makyonget',
     people: [
       {
         recipient: {
-          id: 13737997,
-          currency: "GBP",
+          id: 74565782,
+          currency: "USD",
         }
       },
     ]
   }
 ]
 
-const profile_id = '2416'
+const profile_id = '11319295'
 
 const QuoteContent = ({quote}:any) => {
   if(!quote) {
@@ -105,11 +106,15 @@ const QuoteContent = ({quote}:any) => {
   )
 }
 
-const TransferContent = ({transfer}:any) => {
-  if(!transfer) {
+const TransferContent = ({transfer, quote}:any) => {
+  if(!transfer || !quote) {
     return(
       <>
-        <div className="is-7">Creating...</div>
+        <div className="is-7">
+          {
+            !quote ? 'Waiting...' : 'Transferring...'
+          }
+        </div>
       </>
     )
   }
@@ -128,14 +133,42 @@ const TransferContent = ({transfer}:any) => {
   )
 }
 
+const FundContent = ({fund, transfer}:any) => {
+  if(!fund || !transfer) {
+    return(
+      <>
+        <div className="is-7">
+          {
+            !transfer ? 'Waiting...' : 'Funding...'
+          }
+        </div>
+      </>
+    )
+  }
+  return(
+    <>
+      <div className="title is-6 has-text-weight-light">Target Amount:</div>
+      <div className="subtitle is-3 has-text-weight-medium">{transfer.targetValue}</div>
+      <div className="is-6 has-text-weight-light">Reference / Contract: <span className="has-text-weight-medium">{transfer.reference} </span></div>
+      <div className="is-6 has-text-weight-light">Type: <span className="has-text-weight-medium">{fund.type} </span></div>
+      <div className="is-6 has-text-weight-light">Status: <span className="has-text-weight-medium">{fund.status} </span></div>
+    </>
+  )
+}
+
 
 const AutoPayout: React.FC = ({ location }: any) => {
   const [target_account, setTargetAccount] = useState();
   const [quote, setQuote] = useState();
   const [transfer, setTransfer] = useState();
+  const [fund, setFund] = useState();
   const [contract_name, setContractName] = useState();
   const [error, setError] = useState('');
   console.log(error)
+
+  // Auto payout: 
+  // Steap 1: create quote
+  //  quote data are from a dummy contract (contracts[])
   useEffect( () => {
     const params = queryString.parse(location.search)
     const contract = contracts.find(contract => contract.id === toNumber(params.contract));
@@ -144,7 +177,7 @@ const AutoPayout: React.FC = ({ location }: any) => {
 
     const createQuote = async (body:any) => {
       try {
-        const response = await API('POST', "quotes", body)
+        const response = await API('POST', "v1/quotes", body)
         setQuote(response.data)
       } catch (api_error) {
         setError(api_error)
@@ -164,11 +197,12 @@ const AutoPayout: React.FC = ({ location }: any) => {
     }
   }, [])
 
-
+  // Steap 2: create transfer
+  //  transfer will be created once quote was successfully create, and get its id
   useEffect( () => {
     const createTransfer = async (body:any) => {
       try {
-        const response = await API('POST', "transfers", body)
+        const response = await API('POST', "v1/transfers", body)
         setTransfer(response.data)
       } catch (api_error) {
         setError(api_error)
@@ -187,13 +221,34 @@ const AutoPayout: React.FC = ({ location }: any) => {
     createTransfer(body)
     }
   }, [quote])
+
+  // Steap 3: fund a transfer
+
+  useEffect( () => {
+    const fundTransfer = async (body:any) => {
+      try {
+        const response = await API('POST', `v3/profiles/${profile_id}/transfers/${transfer.id}/payments`, body)
+        setFund(response.data)
+      } catch (api_error) {
+        setError(api_error)
+      }
+  }
+
+    if(transfer) {
+      const body = {
+        type: "BALANCE"
+      }
+
+      fundTransfer(body)
+    }
+  }, [transfer])
   
   return(
     <Admin>
       <div id="AutoPayout">
         <div className="title is-4" >Auto Payout Process</div>
             <div className="columns is-multiline">
-              <div className="column is-one-half">
+              <div className="column is-one-third">
                 <div className="card">
                 <header className="card-header">
                   <p className="card-header-title">
@@ -207,7 +262,7 @@ const AutoPayout: React.FC = ({ location }: any) => {
                 </div>
               </div>
               </div>
-              <div className="column is-one-half">
+              <div className="column is-one-third">
                 <div className="card">
                 <header className="card-header">
                   <p className="card-header-title">
@@ -215,10 +270,22 @@ const AutoPayout: React.FC = ({ location }: any) => {
                   </p>
                 </header>
                 <div className="card-content">
-                  <TransferContent transfer={transfer}/>
+                  <TransferContent transfer={transfer} quote={quote}/>
                 </div>
               </div>
-            </div>
+              </div>
+              <div className="column is-one-third">
+                <div className="card">
+                <header className="card-header">
+                  <p className="card-header-title">
+                    Fund
+                  </p>
+                </header>
+                <div className="card-content">
+                  <FundContent fund={fund} transfer={transfer}/>
+                </div>
+              </div>
+              </div>
           </div>
       </div>
     </Admin>
