@@ -1,4 +1,8 @@
 #!/bin/bash
+
+NY_S3_LINK=$(cat .ny-goose/ny-s3-link.txt)
+CONTAINER_NAME=$(cat .ny-goose/ny-container-name.txt)
+
 curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 	"blocks": [
 		{
@@ -22,7 +26,7 @@ curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 				},
 				{
 					"type": "mrkdwn",
-					"text": "*App Link:*\n <'$NY_S3_BUCKET' | Web App: '$CONTAINER_NAME'>"
+					"text": "*App Link:*\n <'$NY_S3_LINK' | Web App: '$CONTAINER_NAME'>"
 				}
 			]
 		}
