@@ -48,4 +48,4 @@ docker run \
 docker run \
   -v $PWD/build:/data \
   garland/aws-cli-docker \
-  aws s3 sync --acl public-read --sse --delete /data s3://ny-web-master/
+  aws --version
