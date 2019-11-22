@@ -2,6 +2,8 @@ import axios from 'axios'
 
 const api_url = process.env.NY_API_HOST
 
+console.log(process.env)
+
 const API = (method:any, url:any, body?:any) => {
   const response = axios({
     method,

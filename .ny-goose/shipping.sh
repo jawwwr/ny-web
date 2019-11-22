@@ -7,9 +7,9 @@ CONTAINER_NAME=$(cat .ny-goose/ny-container-name.txt)
 
 rm -fr $PWD'/dist/*'
 
-echo NY_API_HOST
-echo NY_S3_BUCKET
-echo NY_S3_LINK
+echo $NY_API_HOST
+echo $NY_S3_BUCKET
+echo $NY_S3_LINK
 
 curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 	"blocks": [
