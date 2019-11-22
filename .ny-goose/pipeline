@@ -1,4 +1,5 @@
 node {
+    def ENV_NAME = 'beta'
     stage('Initialize') {
         sh """
             echo 'Broadcast started on slack!'
@@ -8,6 +9,44 @@ node {
     }
     stage ('Checkout') {
         checkout scm
+
+        CONTAINER_NAME = sh (
+            script: "if [ $JOB_BASE_NAME = master ]; then echo 'master'; else echo 'beta'; fi",
+            returnStdout: true
+        ).trim()
+
+        script {
+            if (JOB_BASE_NAME == 'master') {
+                ENV_NAME = 'master'
+            } else {
+                ENV_NAME = 'beta'
+            }
+        }
+
+        sh """
+            if [ $ENV_NAME = master ] ; then
+                echo 'NY_API_HOST=http://3.0.178.112' > .env
+                echo 'http://3.0.178.112' > .ny-goose/ny-api-host.txt
+
+                echo 'NY_S3_BUCKET=s3://ny-web-master/' > .env
+                echo 's3://ny-web-master/' > .ny-goose/ny-s3-bucket.txt
+
+                echo 'NY_S3_LINK=http://ny-web-master.s3-website-ap-southeast-1.amazonaws.com' > .env
+                echo 'http://ny-web-master.s3-website-ap-southeast-1.amazonaws.com' > .ny-goose/ny-s3-link.txt
+
+            elif [ $ENV_NAME = beta ] ; then
+                echo 'NY_API_HOST=http://3.0.178.112:3000' > .env
+                echo 'http://3.0.178.112:3000' > .ny-goose/ny-api-host.txt
+
+                echo 'NY_S3_BUCKET=s3://ny-web-beta/' > .env
+                echo 's3://ny-web-beta/' > .ny-goose/ny-s3-bucket.txt
+
+                echo 'NY_S3_LINK=http://ny-web-beta.s3-website-ap-southeast-1.amazonaws.com' > .env
+                echo 'http://ny-web-beta.s3-website-ap-southeast-1.amazonaws.com' > .ny-goose/ny-s3-link.txt
+            fi
+
+            echo $CONTAINER_NAME > .ny-goose/ny-container-name.txt
+        """
     }
     stage('Build') {
         sh """
@@ -32,7 +71,6 @@ node {
     stage('Done') {
         sh """
             echo 'Broadcast done on slack!'
-            echo "Web App: http://ny-web-master.s3-website-ap-southeast-1.amazonaws.com"
         """
     }
 }

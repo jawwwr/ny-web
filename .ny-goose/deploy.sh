@@ -1,8 +1,11 @@
 #!/bin/bash
 VOLUME=$PWD':/web-app/'
+NY_API_HOST=$(cat .ny-goose/ny-api-host.txt)
+NY_S3_BUCKET=$(cat .ny-goose/ny-s3-bucket.txt)
+NY_S3_LINK=$(cat .ny-goose/ny-s3-link.txt)
+CONTAINER_NAME=$(cat .ny-goose/ny-container-name.txt)
 
 rm -fr $PWD'/dist/*'
-
 
 curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 	"blocks": [
@@ -15,19 +18,19 @@ curl -X POST -H 'Content-type: application/json' -s $GOOSE_SLACK_WEBHOOK -d '{
 		},
 		{
 			"type": "section",
-            "accessory": {
-                "type": "image",
-                "image_url": "https://cultofthepartyparrot.com/parrots/shipitparrot.gif",
-                "alt_text": "Shipping to S3"
-              },
+				"accessory": {
+						"type": "image",
+						"image_url": "https://cultofthepartyparrot.com/parrots/shipitparrot.gif",
+						"alt_text": "Shipping to S3"
+					},
 			"fields": [
 				{
 					"type": "mrkdwn",
-					"text": "*Branch:*\n Master"
+					"text": "*Branch* `'${BRANCH_NAME}'`"
 				},
 				{
 					"type": "mrkdwn",
-					"text": "*App Link:*\n <http://ny-web-master.s3-website-ap-southeast-1.amazonaws.com | Web App>"
+					"text": "*App Link:*\n <'$S3_BUCKET' | Web App: '$CONTAINER_NAME'>"
 				}
 			]
 		}
@@ -50,4 +53,4 @@ docker run \
 	--env AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
   -v $PWD/build:/data \
   garland/aws-cli-docker \
-  aws s3 sync --acl public-read --sse --delete /data s3://ny-web-master/
+  aws s3 sync --acl public-read --sse --delete /data $NY_S3_BUCKET
