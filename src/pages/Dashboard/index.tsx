@@ -22,7 +22,7 @@ const Dashboard: React.FC = () => {
         setError(api_error)
       }
   }
-  getUsers()
+  // getUsers()
   }, [])
 
   return(
