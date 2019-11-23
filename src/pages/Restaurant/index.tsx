@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import API from 'services/api'
 import SOCKETIO from 'services/socketio'
+import { Link } from "react-router-dom";
 import RestaurantCard from 'components/RestaurantCard'
+import Modal from 'components/Modal'
 
 const PhotoView = ({ photo } :any) => {
   return(
@@ -28,6 +30,7 @@ const PhotoView = ({ photo } :any) => {
 
 const Restaurant: React.FC = ({match}:any) => {
   const [restaurant, setRestaurant] = useState();
+  const [active_modal, setActiveModal] = useState(false)
   const [error, setError] = useState();
 
   useEffect( () => {
@@ -76,9 +79,15 @@ const Restaurant: React.FC = ({match}:any) => {
                     'Loading...' :
                     <>
                     <div className="columns">
-                      <div className="column">
+                      <div className="column is-two-thirds">
                         <div className="title is-4 has-text-primary">
                           {restaurant.establishment[0]}
+                        </div>
+                      </div>
+                      <div className="column">
+                        <div className="buttons is-pulled-right">
+                          <Link className="button is-danger" to={`/restaurants/${match.params.id}/check-in?type=check-in`}>Check-in</Link>
+                          <Link className="button is-warning" to={`/restaurants/${match.params.id}/check-in?type=calculate`}>Calculate</Link>
                         </div>
                       </div>
                     </div>
@@ -127,6 +136,7 @@ const Restaurant: React.FC = ({match}:any) => {
           </div>
         </div>
       </div>
+      <Modal active_modal={active_modal} setActiveModal={setActiveModal}/>
     </div>
   )
 }
