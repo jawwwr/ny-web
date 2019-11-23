@@ -9,7 +9,6 @@ export const Admin: React.FunctionComponent = props => {
   if (cookies['ny-key']) {
     return (
       <div id="Admin">
-        <Navbar />
         <div className="container">
           <div className="columns">
             <div className="column is-3 ">

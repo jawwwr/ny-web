@@ -1,19 +1,27 @@
 import * as React from 'react'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Home from 'pages/Home';
 import Dashboard from 'pages/Dashboard';
+import Restaurant from 'pages/Restaurant';
+import RestaurantCheckin from 'pages/RestaurantCheckin';
 import OtherPage from 'pages/OtherPage';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import Navbar from 'components/Navbar'
 
 const Routes = (
   <Router>
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route exact path="/admin/dashboard" component={Dashboard} />
-      <Route exact path="/admin/other-page" component={OtherPage} />
-      <Route exact path="/login" component={() => <h1>Login</h1>} />
-      <Route exact path="/404" component={() => <h1>Page not found.</h1>} />
-      <Redirect to="/404" push={false} />
-    </Switch>
+    <Navbar />
+      <div className="container main-content">
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/user/profile" component={Dashboard} />
+          <Route exact path="/user/other-page" component={OtherPage} />
+          <Route exact path="/restaurants/:id" component={Restaurant} />
+          <Route exact path="/restaurants/:id/check-in" component={RestaurantCheckin} />
+          <Route exact path="/login" component={() => <h1>Login</h1>} />
+          <Route exact path="/404" component={() => <h1>Page not found.</h1>} />
+          <Redirect to="/404" push={false} />
+        </Switch>
+      </div>
   </Router>
 )
 
