@@ -4,6 +4,7 @@ import API_GEO from 'services/geo-ip'
 import SOCKETIO from 'services/socketio'
 import { Link } from "react-router-dom";
 import RestaurantCard from 'components/RestaurantCard'
+import RankingCard from 'components/Ranking'
 import Modal from 'components/Modal'
 import GoogleMapView from 'components/Maps'
 
@@ -40,12 +41,29 @@ const Restaurant: React.FC = ({match}:any) => {
   const [active_modal, setActiveModal] = useState(false)
   const [error, setError] = useState();
   const [myLocation, setMyLocation] = useState();
+  const [ranking, setRanking] = useState();
 
   useEffect( () => {
     SOCKETIO.on('connect', () => {
       console.log("Connected to socketio - web app.", SOCKETIO.id)
     })
     navigator.geolocation.getCurrentPosition(geoSuccess, geoError, geoOptions);
+  }, [])
+
+
+  useEffect( ()  => {
+    if(match.params.id) {
+      const getRanking = async () => {
+        try {
+          const response = await API('GET', `ranks/${match.params.id}?limit=3`)
+          console.log('Ranking Data: ', response)
+          setRanking(response.data)
+        } catch (error) {
+          setError(error)
+        }
+      }
+      getRanking()
+    }
   }, [])
 
   useEffect( () => {
@@ -170,6 +188,10 @@ const Restaurant: React.FC = ({match}:any) => {
                           return <PhotoView key={key} photo={photo.photo} />
                         })
                       }
+                    </div>
+
+                    <div className="columns">
+                      <RankingCard ranking={ranking}></RankingCard>
                     </div>
                     </>
                   }
