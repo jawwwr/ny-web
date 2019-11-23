@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const api_url = 'http://3.0.178.112:300'
+const api_url = 'http://3.0.178.112:3000'
 
 console.log(process.env)
 
