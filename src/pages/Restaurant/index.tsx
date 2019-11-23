@@ -53,6 +53,24 @@ const Restaurant: React.FC = ({match}:any) => {
 
   useEffect( ()  => {
     if(match.params.id) {
+      const getRestaurant = async () => {
+        try {
+          if(!myLocation) {
+            const geo_data = await API_GEO()
+            const coordinates = {
+              lat: geo_data.data.lat,
+              lon: geo_data.data.lon,
+            }
+            const myLocation = `${coordinates.lat},${coordinates.lon}`
+            setMyLocation(myLocation)
+          }
+          const response = await API('GET', `restaurants/${match.params.id}`)
+          setRestaurant(response.data)
+        } catch (api_error) {
+          setError(api_error)
+        }
+      }
+    
       const getRanking = async () => {
         try {
           const response = await API('GET', `ranks/${match.params.id}?limit=3`)
@@ -63,32 +81,10 @@ const Restaurant: React.FC = ({match}:any) => {
         }
       }
       getRanking()
+      getRestaurant()
     }
+
   }, [])
-
-  useEffect( () => {
-
-    if(match.params.id) {
-      const getRestaurant = async () => {
-        if(!myLocation) {
-          const geo_data = await API_GEO()
-          const coordinates = {
-            lat: geo_data.data.lat,
-            lon: geo_data.data.lon,
-          }
-          const myLocation = `${coordinates.lat},${coordinates.lon}`
-          setMyLocation(myLocation)
-        }
-        try {
-          const response = await API('GET', `restaurants/${match.params.id}`)
-          setRestaurant(response.data)
-        } catch (api_error) {
-          setError(api_error)
-        }
-    }
-    getRestaurant()
-  }
-  }, [restaurant, myLocation])
 
   const geoSuccess = (pos:any) => {
     var crd = pos.coords;
