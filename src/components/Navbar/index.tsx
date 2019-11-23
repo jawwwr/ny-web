@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import { useCookies } from 'react-cookie';
 import { Link } from "react-router-dom";
 import './styles.scss'
@@ -7,11 +7,12 @@ const Navbar: React.FunctionComponent = props => {
   const [cookies, setCookie, removeCookie] = useCookies(['ny-key']);
 
   return (
+    <>
     <nav id="Navbar" className="navbar is-white">
       <div className="container">
         <div className="navbar-brand">
           <Link className="navbar-item brand-text" to="/">
-            NY Web
+            Home
           </Link>
           <div className="navbar-burger burger" data-target="navMenu">
             <span></span>
@@ -24,11 +25,8 @@ const Navbar: React.FunctionComponent = props => {
             {
               cookies['ny-key'] ?
               <>
-                <Link className="navbar-item" to="/admin/dashboard">
-                  Dashboard
-                </Link>
-                <Link className="navbar-item" to="/admin/other-page">
-                  Other Page
+                <Link className="navbar-item" to="/user/profile">
+                  Profile
                 </Link>
               </>
               :
@@ -45,6 +43,7 @@ const Navbar: React.FunctionComponent = props => {
         </div>
       </div>
     </nav>
+    </>
   );
 };
 

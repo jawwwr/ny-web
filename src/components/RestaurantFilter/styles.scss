@@ -1,0 +1,15 @@
+#RestaurantFilter {
+  margin-bottom: 1.6rem;
+  .field {
+    margin-bottom: 0;
+    width: 100%;
+    &.has-addons {
+      .control:not(:last-child) {
+        width: 100%;
+      }
+    }
+    .button {
+      min-width: 6rem;
+    }
+  }
+}

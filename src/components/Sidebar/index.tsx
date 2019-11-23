@@ -7,10 +7,10 @@ const Sidebar: React.FunctionComponent = props => {
       <p className="menu-label">General</p>
       <ul className="menu-list">
         <li>
-          <Link to="dashboard" className="is-active">Dashboard</Link>
+          <Link to="/user/profile" className="is-active">Profile</Link>
         </li>
         <li>
-          <Link to="other-page">Other Page</Link>
+          <Link to="/user/other-page">Other Page</Link>
         </li>
       </ul>
     </aside>
