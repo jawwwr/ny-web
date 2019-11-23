@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const api_url = process.env.NY_API_HOST
+const api_url = process.env.REACT_APP_NY_API_HOST
 
 console.log(process.env)
 
