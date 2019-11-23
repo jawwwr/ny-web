@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-const socket = io('http://0.0.0.0:3000');
+const socket = io('http://3.0.178.112:300');
 
 // Emitters
 
