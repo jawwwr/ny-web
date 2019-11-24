@@ -13,8 +13,9 @@ const RestaurantFilter = ({onSearch, cuisines_options} :any) => {
     e.preventDefault()
     onSearch(filters)
   }
+
+  console.log(filters && filters.budget)
   console.log(filters)
-  console.log(cuisines)
   return (
     <div id="RestaurantFilter" className="container">
     <form onSubmit={handleSubmit}>
@@ -33,13 +34,13 @@ const RestaurantFilter = ({onSearch, cuisines_options} :any) => {
           </div>
           <div className="field">
             <p className="control">
-              <input className="input" type="number" min="1" value={filters && filters.number_of_person ? filters.number_of_person : ''} onChange={(e) => setFilters({...filters, number_of_person: e.currentTarget.value})} placeholder="Number of person" />
+              <input className="input" disabled={filters === undefined || filters.budget === undefined || filters.budget === ''} type="number" min="1" value={filters && filters.number_of_person ? filters.number_of_person : ''} onChange={(e) => setFilters({...filters, number_of_person: e.currentTarget.value})} placeholder="Number of person" />
             </p>
           </div>
           <div className="field">
             <div className="control is-expanded">
               <div className="select is-fullwidth">
-                <select defaultValue={filters && filters.cuisines ? filters.cuisines : ''} onChange={(e) => setFilters({...filters, cuisines: e.currentTarget.value})}>
+                <select defaultValue={filters && filters.cuisines ? filters.cuisines : ''} onChange={(e) => {}}>
                   <option>Select</option>
                   {
                     cuisines && cuisines.map((cuisine_obj:any, key) => {
