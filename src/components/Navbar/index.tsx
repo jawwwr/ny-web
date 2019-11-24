@@ -67,6 +67,10 @@ const Navbar: React.FunctionComponent = props => {
                 <Link className="navbar-item" to="/user/profile">
                   Profile
                 </Link>
+
+                <Link className="navbar-item" to="/user/checkin-history">
+                  Check-in History
+                </Link>
               </>
               :
               ''

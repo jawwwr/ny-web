@@ -4,6 +4,7 @@ import Home from 'pages/Home';
 import Dashboard from 'pages/Dashboard';
 import Restaurant from 'pages/Restaurant';
 import RestaurantCheckin from 'pages/RestaurantCheckin';
+import CheckinHistory from 'pages/CheckinHistory';
 import OtherPage from 'pages/OtherPage';
 import Navbar from 'components/Navbar'
 
@@ -14,6 +15,7 @@ const Routes = (
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/user/profile" component={Dashboard} />
+          <Route exact path="/user/checkin-history" component={CheckinHistory}/>
           <Route exact path="/user/other-page" component={OtherPage} />
           <Route exact path="/restaurants/:id" component={Restaurant} />
           <Route exact path="/restaurants/:id/check-in" component={RestaurantCheckin} />
