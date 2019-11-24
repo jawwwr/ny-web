@@ -52,7 +52,7 @@ const RestaurantCheckin: React.FC = ({match}:any) => {
                 </ul>
               </div>
               <div className="">
-                wges
+                Expenses with friends goes here...
               </div>
             </div>
             </>

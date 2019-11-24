@@ -1,10 +1,12 @@
 import React, { useEffect, useState, Suspense } from 'react'
+import { useCookies } from 'react-cookie';
 import API from 'services/api'
 import SOCKETIO from 'services/socketio'
 import Admin from 'pages/Admin';
 import './styles.scss'
 
 const Dashboard: React.FC = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(['ny-key', 'ny-user']);
   const [splitwise, setSplitwise] = useState({value: '', status: ''});
   const [error, setError] = useState();
   useEffect( () => {
@@ -32,7 +34,11 @@ const Dashboard: React.FC = () => {
           <div className="box">
             <div className="columns">
               <div className="column is-four-fifths">
-                test
+                <div className="title is-4">
+                {
+                  cookies['ny-user'] ? cookies['ny-user'].name : ''
+                }
+                </div>
               </div>
               <div className="column">
                 <div className="card split-wise">
