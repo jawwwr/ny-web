@@ -18,7 +18,6 @@ const Home: React.FC = () => {
   const [coordinates, setCoordinates] = useState();
   const [cuisines, setCuisines] = useState();
   const [error, setError] = useState();
-
   useEffect( () => {
     SOCKETIO.on('connect', () => {
       console.log("Connected to socketio - web app.", SOCKETIO.id)

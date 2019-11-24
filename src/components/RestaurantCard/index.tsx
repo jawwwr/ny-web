@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom";
 
 const RestaurantCard = (props :any) => {
-  const { restaurant, src } = props
+  const { restaurant, ranking, src } = props
   return(
       <div className="column is-one-third">
         <div className="card large round">
@@ -38,6 +38,39 @@ const RestaurantCard = (props :any) => {
                   })
                 }
               </div>
+              {
+              src ?
+              <div className="container">
+                <div className="title is-4">
+                  Ranking
+                </div>
+                <div className="table-container">
+                  <table className="table is-hoverable">
+                  <thead>
+                    <tr>
+                      <th>Ranked</th>
+                      <th>Name</th>
+                      <th>Points</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                {
+                  ranking.length > 1 && ranking ? ranking.map((rank:any, key:any) => {
+                    return(
+                      <tr key={key}>
+                        <td>{key+1}</td>
+                        <td>{rank.user.name}</td>
+                        <td>{rank.points}</td>
+                      </tr>
+                    )
+                  }) : 'No Ranking Yet'
+                }
+                </tbody>
+              </table>
+              </div>
+          </div>
+              : ''
+              }
             </div>
           </div>
           {

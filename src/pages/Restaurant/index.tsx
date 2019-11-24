@@ -41,7 +41,7 @@ const Restaurant: React.FC = ({match}:any) => {
   const [active_modal, setActiveModal] = useState(false)
   const [error, setError] = useState();
   const [myLocation, setMyLocation] = useState();
-  const [ranking, setRanking] = useState();
+  const [ranking, setRanking] = useState([]);
 
   useEffect( () => {
     SOCKETIO.on('connect', () => {
@@ -74,7 +74,6 @@ const Restaurant: React.FC = ({match}:any) => {
       const getRanking = async () => {
         try {
           const response = await API('GET', `ranks/${match.params.id}?limit=3`)
-          console.log('Ranking Data: ', response)
           setRanking(response.data)
         } catch (error) {
           setError(error)
@@ -116,7 +115,8 @@ const Restaurant: React.FC = ({match}:any) => {
                   </div>
                 </div>
               </>
-              : <RestaurantCard restaurant={restaurant} src="view"/>
+              :
+              <RestaurantCard restaurant={restaurant} ranking={ranking} src="view"/>
             }
           <div className="column">
             <div className="card large round">
@@ -184,10 +184,6 @@ const Restaurant: React.FC = ({match}:any) => {
                           return <PhotoView key={key} photo={photo.photo} />
                         })
                       }
-                    </div>
-
-                    <div className="columns">
-                      <RankingCard ranking={ranking}></RankingCard>
                     </div>
                     </>
                   }

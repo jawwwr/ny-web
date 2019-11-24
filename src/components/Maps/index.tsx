@@ -1,7 +1,6 @@
 import React from 'react'
 
 const Maps = ({ myLocation, restaurantLocation }: any) => {
-    console.log(myLocation)
     let apiKey = 'AIzaSyDB1a8P7NRBdyVM88hD5JOKMn7M552pEPo'
     let srcUrl = `https://www.google.com/maps/embed/v1/directions?key=${apiKey}&origin=${myLocation}&destination=${restaurantLocation}`
     return(
