@@ -42,7 +42,7 @@ const Home: React.FC = () => {
           param_filter = Object.entries(coor_filter).map(([key, val]) => `${key}=${val}`).join('&');
         }
         const response = await API('GET', `restaurants?${param_filter}`)
-        setRestaurants(response.data.restaurants)
+        setRestaurants(response.data)
       } catch (api_error) {
         setError(api_error)
       }
