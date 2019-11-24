@@ -40,7 +40,7 @@ const RestaurantFilter = ({onSearch, cuisines_options} :any) => {
           <div className="field">
             <div className="control is-expanded">
               <div className="select is-fullwidth">
-                <select defaultValue={filters && filters.cuisines ? filters.cuisines : ''} onChange={(e) => {}}>
+                <select defaultValue={filters && filters.cuisines ? filters.cuisines : ''} onChange={(e) => setFilters({...filters, cuisines: e.currentTarget.value})}>
                   <option>Select</option>
                   {
                     cuisines && cuisines.map((cuisine_obj:any, key) => {
