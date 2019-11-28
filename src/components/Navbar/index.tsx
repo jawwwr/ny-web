@@ -1,10 +1,10 @@
 import * as React from "react";
-import { useCookies } from 'react-cookie';
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
-import './styles.scss'
+import "./styles.scss";
 
 const Navbar: React.FunctionComponent = props => {
-  const [cookies, setCookie, removeCookie] = useCookies(['ny-key']);
+  const [cookies, setCookie, removeCookie] = useCookies(["ny-key"]);
 
   return (
     <nav id="Navbar" className="navbar is-white">
@@ -21,23 +21,39 @@ const Navbar: React.FunctionComponent = props => {
         </div>
         <div id="navMenu" className="navbar-menu">
           <div className="navbar-start">
-            {
-              cookies['ny-key'] ?
+            {cookies["ny-key"] ? (
               <>
-                <Link className="navbar-item is-active" to="/admin/balances">
+                <Link className="navbar-item" to="/admin/balances">
                   TransferWise
                 </Link>
+                <Link className="navbar-item" to="/admin/date-time-pickers">
+                  Date & Time Pickers
+                </Link>
               </>
-              :
-              ''
-            }
+            ) : (
+              ""
+            )}
           </div>
           <div className="navbar-end">
-            {
-              cookies['ny-key'] ?
-                <Link to="" className="navbar-item" onClick={() => removeCookie('ny-key', {path: '/'})}> Logout</Link>
-              : <Link to="" className="navbar-item" onClick={() => setCookie('ny-key', 'test-key', {path: '/'})}> Login</Link>
-            }
+            {cookies["ny-key"] ? (
+              <Link
+                to=""
+                className="navbar-item"
+                onClick={() => removeCookie("ny-key", { path: "/" })}
+              >
+                {" "}
+                Logout
+              </Link>
+            ) : (
+              <Link
+                to=""
+                className="navbar-item"
+                onClick={() => setCookie("ny-key", "test-key", { path: "/" })}
+              >
+                {" "}
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>

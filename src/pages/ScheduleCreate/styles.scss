@@ -1,0 +1,21 @@
+.card {
+  cursor: pointer;
+  box-shadow: none !important;
+
+  &.active {
+    box-shadow: 0 0.5em 1em -0.125em rgba(50, 115, 220, .3), 0 0px 0 1px rgba(50, 115, 220, .4) !important;
+  }
+}
+
+.source-mny {
+  margin-left: .1rem !important;
+  text-align: center;
+
+  >.card {
+    margin-right: .5rem;
+  }
+}
+
+.schd {
+  margin-bottom: 1rem !important;
+}

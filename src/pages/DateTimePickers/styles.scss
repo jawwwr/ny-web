@@ -1,0 +1,38 @@
+.react-datetime {
+  .rdtPicker {
+    width: -webkit-fill-available;
+
+    >div {
+      table {
+
+        thead,
+        tbody {
+          tr {
+
+            td,
+            th {
+              text-align: center;
+            }
+          }
+        }
+
+        tfoot {
+          tr {
+            td {
+              &.rdtTimeToggle {
+                padding-top: 6px;
+                padding-bottom: 6px;
+              }
+            }
+          }
+        }
+
+        td,
+        th {
+          vertical-align: inherit;
+          padding: 2px;
+        }
+      }
+    }
+  }
+}
